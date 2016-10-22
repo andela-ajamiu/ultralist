@@ -9,6 +9,14 @@ gem 'sqlite3'
 gem 'puma', '~> 3.0'
 
 gem 'bcrypt', '~> 3.1', '>= 3.1.11'
+
+gem 'pry', '~> 0.10.4'
+
+gem 'pry-rails', '~> 0.3.4'
+
+gem 'pry-nav', '~> 0.2.4'
+
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -31,6 +39,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
 
   gem 'shoulda-matchers', '~> 3.1', '>= 3.1.1'
+
+  gem 'faker', '~> 1.6', '>= 1.6.6'
 end
 
 group :development do
