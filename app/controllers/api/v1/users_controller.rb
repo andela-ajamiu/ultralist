@@ -3,16 +3,14 @@ module Api
     class UsersController < ApplicationController
       def create
         user = User.new(user_params)
-        if user && user.save
-          render json: user, status: :created
-        else
-          render json: { errors: user.errors.full_messages },
-                 status: :unprocessable_entity
-        end
+        render(json: user, status: :created) && return if user.save
+        render json: { errors: user.errors.full_messages },
+               status: :unprocessable_entity
       end
 
       def index
-        render json: User.all
+        render(json: User.all) && return if User.exists?
+        render json: { error: "No registered user at the moment" }
       end
 
       private

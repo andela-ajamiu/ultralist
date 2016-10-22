@@ -7,7 +7,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         post :create, params: { user: attributes_for(:user) }
 
         json_response = JSON.parse(response.body)
-        expect(json_response["username"]).to eq("emjay")
+        expect(json_response["username"]).to eq(User.last.username)
         expect(response).to have_http_status(:success)
         expect { post :create, user: attributes_for(:user) }.
           to change { User.count }.by(1)
