@@ -1,7 +1,13 @@
 class User < ApplicationRecord
-  before_save { email.downcase! if email }
+  before_save do
+    email.downcase! if email
+    username.downcase! if username
+  end
 
-  validates :username, presence: true, length: { maximum: 15 }
+  validates :username, presence: true,
+                       length: { maximum: 15 },
+                       uniqueness: true
+
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true,
                     format: { with: VALID_EMAIL_REGEX },

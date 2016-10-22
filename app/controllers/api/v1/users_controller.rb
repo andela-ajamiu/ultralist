@@ -11,6 +11,10 @@ module Api
         end
       end
 
+      def index
+        render json: User.all
+      end
+
       private
 
       def user_params
