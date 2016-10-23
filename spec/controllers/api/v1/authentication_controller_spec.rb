@@ -21,10 +21,10 @@ RSpec.describe Api::V1::AuthenticationController, type: :controller do
     end
   end
 
-  describe "GET #logout" do
-    it "returns http success" do
-      get :logout
-      expect(response).to have_http_status(:success)
-    end
-  end
+  # describe "GET #logout" do
+  #   it "returns http success" do
+  #     get :logout
+  #     expect(response).to have_http_status(:success)
+  #   end
+  # end
 end

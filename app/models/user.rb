@@ -5,7 +5,6 @@ class User < ApplicationRecord
   end
 
   validates :username, presence: true,
-                       length: { maximum: 15 },
                        uniqueness: true
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

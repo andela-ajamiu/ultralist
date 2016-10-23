@@ -2,6 +2,7 @@ module Api
   module V1
     class UsersController < ApplicationController
       def create
+        binding.pry
         user = User.new(user_params)
         render(json: user, status: :created) && return if user.save
         render json: { errors: user.errors.full_messages },
@@ -16,10 +17,10 @@ module Api
       private
 
       def user_params
-        params.require(:user).permit(:username,
-                                     :email,
-                                     :password,
-                                     :password_confirmation)
+        params.permit(:username,
+                      :email,
+                      :password,
+                      :password_confirmation)
       end
     end
   end
