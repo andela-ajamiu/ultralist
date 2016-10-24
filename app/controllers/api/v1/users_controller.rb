@@ -2,9 +2,11 @@ module Api
   module V1
     class UsersController < ApplicationController
       def create
-        binding.pry
         user = User.new(user_params)
-        render(json: user, status: :created) && return if user.save
+        if user.save
+          update_token(user)
+          render(json: user, status: :created) && return
+        end
         render json: { errors: user.errors.full_messages },
                status: :unprocessable_entity
       end

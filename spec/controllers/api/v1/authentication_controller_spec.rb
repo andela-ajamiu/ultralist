@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::AuthenticationController, type: :controller do
-
   describe "POST #login" do
     let(:user) { create(:user) }
     context "when user supply correct login details" do
       it "should login the user" do
-        post :login, params: { username: user.username, password: user.password }
+        post :login, params: { username: user.username, password: "validpass" }
 
         expect(response).to have_http_status(:success)
       end

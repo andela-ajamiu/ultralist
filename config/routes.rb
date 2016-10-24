@@ -6,8 +6,9 @@ Rails.application.routes.draw do
       resources :users, only: [:create, :index]
 
       scope "/auth", controller: :authentication do
-        get '/logout' => :logout
         post '/login' => :login
+        get '/logged_in' => :logged_in
+        get '/logout' => :logout
       end
 
       resources :bucketlists do
