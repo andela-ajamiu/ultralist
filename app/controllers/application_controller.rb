@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
   end
 
   def authenticate_token
-    if current_request_token && decode_token_to_user_id
+    if current_request_token && decode_payload[:data]
       true
     else
       render json: { error: "Empty or Invalid token, Please input the correct token in the request header" }, status: 401
@@ -31,14 +31,14 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    User.find_by(id: decode_token_to_user_id)
+    User.find_by(id: decode_payload[:data][:user_id])
   end
 
   def current_request_token
     request.headers[:token]
   end
 
-  def decode_token_to_user_id
-    JwtAuthentication.decode(current_request_token)[:data][:user_id]
+  def decode_payload
+    JwtAuthentication.decode(current_request_token)
   end
 end

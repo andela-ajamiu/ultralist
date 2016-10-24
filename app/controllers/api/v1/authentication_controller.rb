@@ -13,8 +13,7 @@ module Api
 
       def logged_in
         if authenticate_token_and_user
-          expire_time = Time.at(JwtAuthentication.
-                        decode(current_request_token)[:exp]).
+          expire_time = Time.at(decode_payload[:exp]).
                         strftime("%A, %d/%b/%Y %l:%M%p")
 
           render json: { success: "You are still logged in",
@@ -24,6 +23,10 @@ module Api
       end
 
       def logout
+        if authenticate_token_and_user
+          current_user.update_attribute(:token, nil)
+          render json: { message: "Successfully logged out" }, status: 200
+        end
       end
     end
   end

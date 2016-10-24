@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
 
-  namespace :api, defaults: { format: :json }  do
+  namespace :api, defaults: { format: :json } do
     namespace :v1 do
 
-      resources :users, only: [:create, :index]
+      post "users" => "users#create", as: :register
+      get "users" => "users#index", as: :users
 
       scope "/auth", controller: :authentication do
         post '/login' => :login
