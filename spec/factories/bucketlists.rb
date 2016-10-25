@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :bucketlist do
-    name "MyString"
-    user nil
+    sequence(:name) { |n| "Travel#{n}" }
+    user
   end
 end

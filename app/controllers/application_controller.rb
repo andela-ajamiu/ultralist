@@ -16,7 +16,8 @@ class ApplicationController < ActionController::API
     if current_request_token && decode_payload[:data]
       true
     else
-      render json: { error: "Empty or Invalid token, Please input the correct token in the request header" }, status: 401
+      render json: { error: "Empty or Invalid header token" },
+             status: :unauthorized
       false
     end
   end
