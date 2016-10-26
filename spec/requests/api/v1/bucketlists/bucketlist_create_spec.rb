@@ -4,14 +4,14 @@ RSpec.describe "BucketLists #create", type: :request do
   let(:user) { create(:user) }
   let(:create_params) { attributes_for(:bucketlist, user_id: user.id) }
 
-  context "as an authenticated user" do
+  context "when an authenticated user" do
     before { login_user(user) }
 
     context "when valid attributes are provided" do
       context "with a unique bucketlist name" do
         it "creates the bucketlist" do
           post api_v1_bucketlists_path,
-               params: { bucketlist: create_params },
+               params: create_params,
                headers: user_token(user)
 
           expect(json_response[:name]).to eq "Travel1"
@@ -20,16 +20,16 @@ RSpec.describe "BucketLists #create", type: :request do
       end
 
       context "with a non unique bucketlist name" do
-        before { create(:bucketlist, name: "Shopping") }
+        before { create(:bucketlist, name: "Shopping", user_id: user.id) }
 
         it "does not create the bucketlist" do
           create_params = { name: "Shopping", user_id: user.id }
 
           post api_v1_bucketlists_path,
-               params: { bucketlist: create_params },
+               params: create_params,
                headers: user_token(user)
 
-          expect(json_response).to include "Name has already been taken"
+          expect(json_response[:error]).to include "Name has already been taken"
           expect(response).to have_http_status :unprocessable_entity
         end
       end
@@ -40,7 +40,7 @@ RSpec.describe "BucketLists #create", type: :request do
         invalid_params = { invalid_name: "Invalid" }
 
         post api_v1_bucketlists_path,
-             params: { bucketlist: invalid_params },
+             params: invalid_params,
              headers: user_token(user)
 
         expect(response).to have_http_status :unprocessable_entity
@@ -51,7 +51,7 @@ RSpec.describe "BucketLists #create", type: :request do
   context "when an unauthenticated user" do
     it "does not create the bucketlist" do
       post api_v1_bucketlists_path,
-           params: { bucketlist: create_params },
+           params: create_params,
            headers: user_token(user)
 
       expect(response).to have_http_status :unauthorized

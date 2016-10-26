@@ -10,10 +10,8 @@ RSpec.describe "Updating BucketLists", type: :request do
 
     context "with a valid bucketlist id" do
       it "updates the bucketlist" do
-        update_params = { name: "Houses" }
-
         put api_v1_bucketlist_path(bucketlist.id),
-            params: { bucketlist: update_params },
+            params: { name: "Houses" },
             headers: user_token(user)
 
         user.reload
@@ -24,10 +22,8 @@ RSpec.describe "Updating BucketLists", type: :request do
 
     context "with an invalid bucket_list id" do
       it "does not update the bucket list" do
-        update_params = { name: "Cars" }
-
         put api_v1_bucketlist_path(5),
-            params: { bucketlist: update_params },
+            params: { name: "Cars" },
             headers: user_token(user)
 
         user.reload
@@ -39,10 +35,8 @@ RSpec.describe "Updating BucketLists", type: :request do
 
   context "when an unauthenticated user" do
     it "does not update the bucketlist" do
-      update_params = { name: "Charity" }
-
       put api_v1_bucketlist_path(bucketlist.id),
-          params: { bucketlist: update_params },
+          params: { name: "Charity" },
           headers: user_token(user)
 
       user.reload

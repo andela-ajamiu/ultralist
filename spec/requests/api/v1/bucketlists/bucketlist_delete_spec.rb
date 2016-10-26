@@ -13,7 +13,7 @@ RSpec.describe "Deleting BucketLists", type: :request do
         delete api_v1_bucketlist_url(bucketlist.id),
                headers: user_token(user)
 
-        expect(response.status).to eq(204)
+        expect(response).to have_http_status :success
       end
     end
 
@@ -22,7 +22,7 @@ RSpec.describe "Deleting BucketLists", type: :request do
         delete api_v1_bucketlist_url(5),
                headers: user_token(user)
 
-        expect(response.status).to eq(404)
+        expect(response).to have_http_status 404
       end
     end
   end
@@ -32,7 +32,7 @@ RSpec.describe "Deleting BucketLists", type: :request do
       delete api_v1_bucketlist_url(bucketlist.id),
              headers: user_token(user)
 
-      expect(response.status).to eq(401)
+      expect(response).to have_http_status 401
     end
   end
 end
