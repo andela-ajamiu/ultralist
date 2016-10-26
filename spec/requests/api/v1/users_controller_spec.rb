@@ -1,13 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "Api::V1::UsersController", type: :request do
+RSpec.describe "Api::V1::Users", type: :request do
   describe "POST #create" do
     context "when user registration is successful" do
       it "creates a new user" do
         post api_v1_register_path, params: attributes_for(:user)
 
-        json_response = JSON.parse(response.body)
-        expect(json_response["username"]).to eq(User.last.username)
+        expect(json_response[:username]).to eq(User.last.username)
         expect(response).to have_http_status :created
       end
     end
@@ -16,8 +15,7 @@ RSpec.describe "Api::V1::UsersController", type: :request do
       it "returns unprocessible_entity error" do
         post api_v1_register_path, params: attributes_for(:user, email: "")
 
-        json_response = JSON.parse(response.body)
-        expect(json_response["errors"]).to include("Email can't be blank")
+        expect(json_response[:errors]).to include("Email can't be blank")
         expect(response).to have_http_status(422)
       end
     end

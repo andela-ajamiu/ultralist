@@ -16,7 +16,7 @@ require "action_cable/engine"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Bucketlist
+module Ultralist
   class Application < Rails::Application
     # config.autoload_paths << Rails.root.join('lib')
     # config.autoload_paths += %W(#{config.root}/lib)

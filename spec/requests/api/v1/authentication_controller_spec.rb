@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Api::V1::AuthenticationController", type: :request do
+RSpec.describe "Api::V1::Authentication", type: :request do
   let(:user) { create(:user) }
   describe "POST #login" do
     context "when user supply correct login details" do
@@ -23,15 +23,11 @@ RSpec.describe "Api::V1::AuthenticationController", type: :request do
   end
 
   describe "GET #logout" do
-    before do
-      post api_v1_login_path,
-           params: { username: user.username, password: "validpass" }
-      user.reload
-    end
+    before { login_user(user) }
 
     context "when user supply a valid token header" do
       it "logs the user out and destroys the users token" do
-        get api_v1_logout_path, headers: { token: user.token }
+        get api_v1_logout_path, headers: user_token(user)
         user.reload
 
         expect(user.token).to be_nil

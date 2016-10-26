@@ -16,7 +16,7 @@ module Api
           expire_time = Time.at(decode_payload[:exp]).
                         strftime("%A, %d/%b/%Y %l:%M%p")
 
-          render json: { success: "You are still logged in",
+          render json: { message: "You are still logged in",
                          expires_at: expire_time },
                  status: 200
         end
