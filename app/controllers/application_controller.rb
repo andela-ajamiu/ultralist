@@ -26,7 +26,7 @@ class ApplicationController < ActionController::API
     if current_user && current_user.token == current_request_token
       true
     else
-      render json: { error: "Unauthorized User" }, status: 401
+      render json: { error: "Unauthorized User" }, status: :unauthorized
       false
     end
   end

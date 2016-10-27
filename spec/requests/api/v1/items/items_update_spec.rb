@@ -57,7 +57,8 @@ RSpec.describe "Items #update", type: :request do
         update_params = { name: item.name, done: true }
         put api_v1_bucketlist_item_path(path_params),
             params: update_params,
-            headers: user_token(user
+            headers: user_token(user)
+
         expect(response).to have_http_status :unprocessable_entity
       end
     end

@@ -9,7 +9,7 @@ module Api
         if @bucketlists.any?
           render json: @bucketlists
         else
-          render json: { message: "No Bucketlist at the moment" }, status: :ok
+          render json: { message: "No Bucketlist at the moment" }
         end
       end
 
@@ -21,9 +21,7 @@ module Api
         @bucketlist = current_user.bucketlists.new(bucketlist_params)
 
         if @bucketlist.save
-          render json: @bucketlist,
-                 status: :created,
-                 location: api_v1_bucketlist_path(@bucketlist)
+          render json: @bucketlist, status: :created
         else
           render json: { error: @bucketlist.errors.full_messages },
                  status: :unprocessable_entity
@@ -42,23 +40,16 @@ module Api
 
       def destroy
         @bucketlist.destroy
-        render json: { message: "Bucketlist successfully deleted" }, status: :ok
+        render json: { message: "Bucketlist successfully deleted" }
       end
 
       private
 
       def set_bucketlist
-        @bucketlist = Bucketlist.find_by(id: params[:id])
-        verify_bucketlist_owner if authenticate_token_and_user
-      end
-
-      def verify_bucketlist_owner
-        if @bucketlist && current_user.id == @bucketlist.user_id
-          true
-        else
-          render json: { error: "Bucketlist not found" }, status: 404
-          false
-        end
+        return false unless authenticate_token_and_user
+        @bucketlist = current_user.bucketlists.find_by(id: params[:id])
+        render json: { error: "Bucketlist not found" },
+               status: 404 unless @bucketlist
       end
 
       def bucketlist_params
