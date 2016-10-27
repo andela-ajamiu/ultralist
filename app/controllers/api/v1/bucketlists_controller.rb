@@ -5,7 +5,7 @@ module Api
       before_action :set_bucketlist, only: [:show, :update, :destroy]
 
       def index
-        @bucketlists = current_user.bucketlists
+        @bucketlists = logged_in_user.bucketlists
         if @bucketlists.any?
           render json: @bucketlists
         else
@@ -18,7 +18,7 @@ module Api
       end
 
       def create
-        @bucketlist = current_user.bucketlists.new(bucketlist_params)
+        @bucketlist = logged_in_user.bucketlists.new(bucketlist_params)
 
         if @bucketlist.save
           render json: @bucketlist, status: :created
@@ -47,7 +47,7 @@ module Api
 
       def set_bucketlist
         return false unless authenticate_token_and_user
-        @bucketlist = current_user.bucketlists.find_by(id: params[:id])
+        @bucketlist = logged_in_user.bucketlists.find_by(id: params[:id])
         render json: { error: "Bucketlist not found" },
                status: 404 unless @bucketlist
       end

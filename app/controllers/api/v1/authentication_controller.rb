@@ -5,7 +5,7 @@ module Api
         user = User.find_by(username: params[:username])
         if user && user.authenticate(params[:password])
           update_token(user)
-          render json: user, status: 200
+          render json: { token: user.token }, status: 200
         else
           render json: { error: "Invalid Login Details" }, status: 401
         end
@@ -24,7 +24,7 @@ module Api
 
       def logout
         if authenticate_token_and_user
-          current_user.update_attribute(:token, nil)
+          logged_in_user.update_attribute(:token, nil)
           render json: { message: "Successfully logged out" }, status: 200
         end
       end

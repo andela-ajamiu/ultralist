@@ -18,6 +18,8 @@ gem 'pry-nav', '~> 0.2.4'
 
 gem 'jwt', '~> 1.5', '>= 1.5.6'
 
+gem 'active_model_serializers', '~> 0.10.2'
+
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
