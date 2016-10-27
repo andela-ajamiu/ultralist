@@ -7,9 +7,17 @@ module Api
       def index
         @bucketlists = logged_in_user.bucketlists
         if @bucketlists.any?
-          render json: @bucketlists
+          search_and_paginate(@bucketlists)
         else
           render json: { message: "No Bucketlist at the moment" }
+        end
+      end
+
+      def search_and_paginate(bucketlists)
+        if bucketlists.paginate_and_search(params).any?
+          render json: bucketlists.paginate_and_search(params)
+        else
+          render json: { error: "Search result is empty" }
         end
       end
 

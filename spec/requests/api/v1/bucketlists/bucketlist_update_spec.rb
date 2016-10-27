@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "BucketLists #update", type: :request do
   let(:user) { create(:user) }
-  before { create(:bucketlist, user_id: user.id) }
+  before { 20.times { create(:bucketlist, user_id: user.id) } }
   let(:bucketlist) { user.bucketlists.first }
 
   context "when an authenticated user" do
@@ -22,7 +22,7 @@ RSpec.describe "BucketLists #update", type: :request do
 
     context "with an invalid bucket_list id" do
       it "does not update the bucket list" do
-        put api_v1_bucketlist_path(5),
+        put api_v1_bucketlist_path(57),
             params: { name: "Cars" },
             headers: user_token(user)
 

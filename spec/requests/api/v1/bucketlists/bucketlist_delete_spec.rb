@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Bucketlists #delete", type: :request do
   let(:user) { create(:user) }
-  before { create(:bucketlist, user_id: user.id) }
+  before { 20.times { create(:bucketlist, user_id: user.id) } }
   let(:bucketlist) { user.bucketlists.first }
 
   context "when an authenticated user" do
@@ -20,7 +20,7 @@ RSpec.describe "Bucketlists #delete", type: :request do
 
     context "with an invalid bucketlist id" do
       it "does not remove the bucketlist" do
-        delete api_v1_bucketlist_url(5),
+        delete api_v1_bucketlist_url(55),
                headers: user_token(user)
 
         expect(json_response[:error]).to eq "Bucketlist not found"

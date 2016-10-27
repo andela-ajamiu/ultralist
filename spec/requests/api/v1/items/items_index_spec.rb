@@ -4,8 +4,8 @@ RSpec.describe "Items #index", type: :request do
   let(:user) { create(:user) }
   let(:bucketlist) { user.bucketlists.first }
   before do
-    create(:bucketlist, user_id: user.id)
-    create(:item, bucketlist_id: bucketlist.id)
+    5.times { create(:bucketlist, user_id: user.id) }
+    10.times { create(:item, bucketlist_id: bucketlist.id) }
   end
 
   context "when an authenticated user" do

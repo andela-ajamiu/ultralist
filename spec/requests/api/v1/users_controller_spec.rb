@@ -6,7 +6,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       it "creates a new user" do
         post api_v1_register_path, params: attributes_for(:user)
 
-        expect(json_response[:username]).to eq(User.last.username)
+        expect(json_response[:token]).to eq(User.last.token)
         expect(response).to have_http_status :created
       end
     end
