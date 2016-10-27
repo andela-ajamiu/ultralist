@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Updating BucketLists", type: :request do
+RSpec.describe "BucketLists #update", type: :request do
   let(:user) { create(:user) }
   before { create(:bucketlist, user_id: user.id) }
   let(:bucketlist) { user.bucketlists.first }
@@ -16,7 +16,7 @@ RSpec.describe "Updating BucketLists", type: :request do
 
         user.reload
         expect(user.bucketlists.first.name).to eq "Houses"
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status :success
       end
     end
 
@@ -28,7 +28,7 @@ RSpec.describe "Updating BucketLists", type: :request do
 
         user.reload
         expect(user.bucketlists.first.name).to_not eq "Cars"
-        expect(response.status).to eq(404)
+        expect(response).to have_http_status :not_found
       end
     end
   end
@@ -41,7 +41,7 @@ RSpec.describe "Updating BucketLists", type: :request do
 
       user.reload
       expect(user.bucketlists.first.name).to_not eq "Charity"
-      expect(response.status).to eq(401)
+      expect(response).to have_http_status :unauthorized
     end
   end
 end

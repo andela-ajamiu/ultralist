@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Deleting BucketLists", type: :request do
+RSpec.describe "Bucketlists #delete", type: :request do
   let(:user) { create(:user) }
   before { create(:bucketlist, user_id: user.id) }
   let(:bucketlist) { user.bucketlists.first }
@@ -13,6 +13,7 @@ RSpec.describe "Deleting BucketLists", type: :request do
         delete api_v1_bucketlist_url(bucketlist.id),
                headers: user_token(user)
 
+        expect(json_response[:message]).to eq "Bucketlist successfully deleted"
         expect(response).to have_http_status :success
       end
     end
@@ -22,7 +23,8 @@ RSpec.describe "Deleting BucketLists", type: :request do
         delete api_v1_bucketlist_url(5),
                headers: user_token(user)
 
-        expect(response).to have_http_status 404
+        expect(json_response[:error]).to eq "Bucketlist not found"
+        expect(response).to have_http_status :not_found
       end
     end
   end
@@ -32,7 +34,8 @@ RSpec.describe "Deleting BucketLists", type: :request do
       delete api_v1_bucketlist_url(bucketlist.id),
              headers: user_token(user)
 
-      expect(response).to have_http_status 401
+      expect(json_response[:error]).to eq "Empty or Invalid header token"
+      expect(response).to have_http_status :unauthorized
     end
   end
 end

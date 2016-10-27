@@ -12,7 +12,7 @@ RSpec.describe "BucketLists #show", type: :request do
         get api_v1_bucketlist_path(bucketlist.id), headers: user_token(user)
 
         expect(json_response[:name]).to eq(user.bucketlists.first.name)
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status :success
       end
     end
 
@@ -21,7 +21,7 @@ RSpec.describe "BucketLists #show", type: :request do
         get api_v1_bucketlist_path(4), headers: user_token(user)
 
         expect(json_response[:error]).to eq("Bucketlist not found")
-        expect(response.status).to eq(404)
+        expect(response).to have_http_status :not_found
       end
     end
   end
@@ -30,7 +30,8 @@ RSpec.describe "BucketLists #show", type: :request do
     it "responds with a http 401 status code" do
       get api_v1_bucketlist_url(bucketlist.id)
 
-      expect(response.status).to eq(401)
+      expect(json_response[:error]).to eq "Empty or Invalid header token"
+      expect(response).to have_http_status :unauthorized
     end
   end
 end
