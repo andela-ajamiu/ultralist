@@ -38,7 +38,7 @@ module Api
 
       def destroy
         @item.destroy
-        render json: { message: "Bucketlist Item successfully deleted" }
+        render json: { message: "Bucketlist Item deleted" }
       end
 
       private
