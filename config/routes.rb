@@ -6,15 +6,16 @@ Rails.application.routes.draw do
       get "users" => "users#index", as: :users
 
       scope "/auth", controller: :authentication do
-        post '/login' => :login
-        get '/logged_in' => :logged_in
-        get '/logout' => :logout
+        post "/login" => :login
+        get "/logged_in" => :logged_in
+        get "/logout" => :logout
       end
 
       resources :bucketlists do
         resources :items
       end
 
+      get "/" => redirect("/api/docs/index.html")
     end
   end
 end
