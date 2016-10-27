@@ -45,7 +45,8 @@ module Api
 
       def set_bucketlist
         return false unless authenticate_token_and_user
-        @bucketlist = logged_in_user.bucketlists.find_by(id: params[:bucketlist_id])
+        @bucketlist = logged_in_user.bucketlists.
+                      find_by(id: params[:bucketlist_id])
         if @bucketlist
           true
         else
