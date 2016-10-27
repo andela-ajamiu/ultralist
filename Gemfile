@@ -45,6 +45,8 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 3.1', '>= 3.1.1'
 
   gem 'faker', '~> 1.6', '>= 1.6.6'
+
+  gem 'codeclimate-test-reporter', '~> 0.6.0', require: nil
 end
 
 group :development do
