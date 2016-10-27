@@ -23,7 +23,7 @@ class ApplicationController < ActionController::API
   end
 
   def authenticate_user
-    if current_user && current_user.token == current_request_token
+    if logged_in_user && logged_in_user.token == current_request_token
       true
     else
       render json: { error: "Unauthorized User" }, status: :unauthorized
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::API
     end
   end
 
-  def current_user
+  def logged_in_user
     User.find_by(id: decode_payload[:data][:user_id])
   end
 
