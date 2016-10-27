@@ -5,8 +5,8 @@ RSpec.describe "Items #update", type: :request do
   let(:bucketlist) { user.bucketlists.first }
   let(:item) { bucketlist.items.first }
   before do
-    create(:bucketlist, user_id: user.id)
-    create(:item, bucketlist_id: bucketlist.id)
+    5.times { create(:bucketlist, user_id: user.id) }
+    10.times { create(:item, bucketlist_id: bucketlist.id) }
   end
 
   context "when an authenticated user" do
@@ -27,7 +27,7 @@ RSpec.describe "Items #update", type: :request do
 
     context "with an invalid bucketlist_id and valid item_id" do
       it "responds with a 404 http status code" do
-        path_params = { bucketlist_id: 4, id: item.id }
+        path_params = { bucketlist_id: 61, id: item.id }
         update_params = { name: "New Name", done: true }
         put api_v1_bucketlist_item_path(path_params),
             params: update_params,
@@ -40,7 +40,7 @@ RSpec.describe "Items #update", type: :request do
 
     context "with a valid bucketlist_id and invalid item_id" do
       it "responds with a 404 http status" do
-        path_params = { bucketlist_id: bucketlist.id, id: 3 }
+        path_params = { bucketlist_id: bucketlist.id, id: 46 }
         update_params = { name: "New Name", done: true }
         put api_v1_bucketlist_item_path(path_params),
             params: update_params,
