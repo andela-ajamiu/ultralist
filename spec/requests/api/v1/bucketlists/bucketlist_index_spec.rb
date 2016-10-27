@@ -3,7 +3,6 @@ require "rails_helper"
 RSpec.describe "BucketLists #index", type: :request do
   let(:user) { create(:user) }
   before { create(:bucketlist, user_id: user.id) }
-  let(:bucketlist) { user.bucketlists.first }
 
   context "when an authenticated user" do
     before { login_user(user) }
@@ -33,6 +32,7 @@ RSpec.describe "BucketLists #index", type: :request do
     it "responds with a 401 http status code" do
       get api_v1_bucketlists_path
 
+      expect(json_response[:error]).to eq "Empty or Invalid header token"
       expect(response).to have_http_status :unauthorized
     end
   end
