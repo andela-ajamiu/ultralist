@@ -18,7 +18,7 @@ RSpec.describe "Deleting BucketList Items", type: :request do
         delete api_v1_bucketlist_item_path(path_params),
                headers: user_token(user)
 
-        expect(json_response[:message]).to eq "Bucketlist Item successfully deleted"
+        expect(json_response[:message]).to eq "Bucketlist Item deleted"
         expect(response).to have_http_status :success
       end
     end

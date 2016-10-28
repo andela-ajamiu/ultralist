@@ -11,7 +11,6 @@ RSpec.describe "BucketLists #index", type: :request do
       it "returns all bucket lists" do
         get api_v1_bucketlists_path, headers: user_token(user)
 
-        # binding.pry
         expect(json_response.count).to eq(user.bucketlists.count)
         expect(response).to have_http_status :success
       end

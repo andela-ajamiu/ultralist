@@ -38,14 +38,15 @@ module Api
 
       def destroy
         @item.destroy
-        render json: { message: "Bucketlist Item successfully deleted" }
+        render json: { message: "Bucketlist Item deleted" }
       end
 
       private
 
       def set_bucketlist
         return false unless authenticate_token_and_user
-        @bucketlist = logged_in_user.bucketlists.find_by(id: params[:bucketlist_id])
+        @bucketlist = logged_in_user.bucketlists.
+                      find_by(id: params[:bucketlist_id])
         if @bucketlist
           true
         else

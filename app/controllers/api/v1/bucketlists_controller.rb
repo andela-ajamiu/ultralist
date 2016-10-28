@@ -37,7 +37,8 @@ module Api
       end
 
       def update
-        if bucketlist_params.empty? || bucketlist_params[:name] == @bucketlist.name
+        if bucketlist_params.empty? ||
+           bucketlist_params[:name] == @bucketlist.name
           render json: { error: "Please input a new name for the bucketlist" },
                  status: :unprocessable_entity
         else
