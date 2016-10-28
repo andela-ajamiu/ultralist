@@ -11,7 +11,7 @@ class Bucketlist < ApplicationRecord
   def self.paginate(page, limit)
     limit = default_limit(limit.to_i)
     page_no = [page.to_i, 1].max - 1
-    offset(limit * page_no).limit(limit)
+    limit(limit).offset(limit * page_no)
   end
 
   def self.default_limit(limit)

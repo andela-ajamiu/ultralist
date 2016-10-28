@@ -15,7 +15,7 @@ Rails.application.routes.draw do
         resources :items
       end
 
-      get "/" => redirect("/api/docs/index.html")
     end
   end
+  get "/", :to => redirect("/api/docs/index.html")
 end
