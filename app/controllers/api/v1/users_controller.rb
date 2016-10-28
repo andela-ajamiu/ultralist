@@ -11,11 +11,6 @@ module Api
                status: :unprocessable_entity
       end
 
-      def index
-        render(json: User.all) && return if User.exists?
-        render json: { error: "No registered user at the moment" }
-      end
-
       private
 
       def user_params

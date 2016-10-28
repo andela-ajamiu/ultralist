@@ -13,14 +13,6 @@ module Api
         end
       end
 
-      def search_and_paginate(bucketlists)
-        if bucketlists.paginate_and_search(params).any?
-          render json: bucketlists.paginate_and_search(params)
-        else
-          render json: { error: "Search result is empty" }
-        end
-      end
-
       def show
         render json: @bucketlist
       end
@@ -59,6 +51,14 @@ module Api
         @bucketlist = logged_in_user.bucketlists.find_by(id: params[:id])
         render json: { error: "Bucketlist not found" },
                status: 404 unless @bucketlist
+      end
+
+      def search_and_paginate(bucketlists)
+        if bucketlists.paginate_and_search(params).any?
+          render json: bucketlists.paginate_and_search(params)
+        else
+          render json: { error: "Search result is empty" }
+        end
       end
 
       def bucketlist_params
