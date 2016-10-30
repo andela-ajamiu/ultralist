@@ -149,7 +149,12 @@ NOTE: The API is currently at version 1, so ensure you prefix each endpoint with
 </tr>
 
 <tr>
-    <td>DELETE /auth/logout:</td>
+    <td>GET /auth/logged_in:</td>
+    <td>Shows the status of the user</td>
+</tr>
+
+<tr>
+    <td>GET /auth/logout:</td>
     <td>Logs out a user</td>
 </tr>
 
@@ -165,32 +170,42 @@ NOTE: The API is currently at version 1, so ensure you prefix each endpoint with
 
 <tr>
     <td>GET /bucketlists/(id):</td>
-    <td>Gets a single bucket list</td>
+    <td>Gets a single bucketlist</td>
 </tr>
 
 <tr>
     <td>PUT /bucketlists/(id):</td>
-    <td>Updates this single bucket list</td>
+    <td>Updates this single bucketlist</td>
 </tr>
 
 <tr>
     <td>DELETE /bucketlists/(id):</td>
-    <td>Deletes this single bucket list</td>
+    <td>Deletes this single bucketlist</td>
 </tr>
 
 <tr>
     <td>POST /bucketlists/(id)/items:</td>
-    <td>Creates a new item in bucket list</td>
+    <td>Creates a new item in bucketlist</td>
+</tr>
+
+<tr>
+    <td>GET /bucketlists(id)/items:</td>
+    <td>Fetech all bucketlist item</td>
+</tr>
+
+<tr>
+    <td>GET /bucketlists/(id)/items/(item_id):</td>
+    <td>Fetch a single bucketlist item</td>
 </tr>
 
 <tr>
     <td>PUT /bucketlists/(id)/items/(item_id):</td>
-    <td>Updates a bucket list item</td>
+    <td>Updates a bucketlist item</td>
 </tr>
 
 <tr>
     <td>DELETE /bucketlists/(id)/items/(item_id):</td>
-    <td>Deletes an item in a bucket list</td>
+    <td>Deletes an item in a bucketlist</td>
 </tr>
 
 </table>
@@ -230,8 +245,8 @@ NOTE: The API is currently at version 1, so ensure you prefix each endpoint with
 </tr>
 </thead><tbody>
 <tr>
-<td>email</td>
-<td>a valid email in the format xxx@domain.com</td>
+<td>username</td>
+<td>a valid username</td>
 </tr>
 <tr>
 <td>password</td>
@@ -279,12 +294,12 @@ Remember request must be of type POST
 </tr>
 </thead><tbody>
 <tr>
-<td>email</td>
-<td>a valid email in the format xxx@domain.com</td>
+<td>username</td>
+<td>a valid username</td>
 </tr>
 <tr>
 <td>password</td>
-<td>a valid string with a minimu of 7 characters</td>
+<td>a valid string with a minimum of 6 characters</td>
 </tr>
 </tbody></table>
 
@@ -447,102 +462,6 @@ Remember request must be of type POST
 </tbody></table>
 
 
-<h2 id="fetching-a-bucket-list">Fetching a bucket list</h2>
-
-<blockquote>
-<p>HTTP Status: 200 </p>
-</blockquote>
-<pre class="highlight shell"><code>curl -i -X GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/1 <span class="se">\</span>
--H <span class="s2">"token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjF9LCJleHAiOjE0Nzc2NTQ2MDB9.OzgMEyQCwEZrlyrT2HV2CqvpQZ_PwhIbBxUGQLQqsKA"</span>
-</code></pre>
-
-<blockquote>
-<p>The above should return JSON data in the format </p>
-</blockquote>
-<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"emjay"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Get Married"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"2016-04-23T16:35:23.841Z"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"2016-04-23T16:35:23.841Z"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/1</code> </p>
-
-<p>This should return a bucketlist created by the user with bucket list id of 1 </p>
-
-<h3 id="headers">Headers</h3>
-
-<table><thead>
-<tr>
-<th>Header</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>token</td>
-<td>a valid user token</td>
-</tr>
-</tbody></table>
-
-<aside class="success">
-Remember to pass a valid id in this case 1
-</aside>
-
-
-<h2 id="search-by-name">Search by name</h2>
-
-<blockquote>
-<p>HTTP Status: 200 </p>
-</blockquote>
-<pre class="highlight shell"><code>curl -i -X GET http://ultrabucket.herokuapp.com/api/v1/bucketlists <span class="se">\</span>
--d <span class="s2">"q=Trave"</span> <span class="se">\</span>
--H <span class="s2">"token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjF9LCJleHAiOjE0Nzc2NTQ2MDB9.OzgMEyQCwEZrlyrT2HV2CqvpQZ_PwhIbBxUGQLQqsKA"</span>
-</code></pre>
-
-<blockquote>
-<p>The above should return JSON data in the format </p>
-</blockquote>
-<pre class="highlight json"><code><span class="w">
-    </span><span class="p">{</span><span class="w">
-         </span><span class="nt">"id"</span><span class="p">:</span><span class="w">  </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-         </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"emjay"</span><span class="p">,</span><span class="w">
-         </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Travel to other countries"</span><span class="p">,</span><span class="w">
-         </span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"2016-04-23T14:22:46.984Z"</span><span class="p">,</span><span class="w">
-         </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"2016-04-23T16:36:56.869Z"</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-
-</span></code></pre>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists</code> </p>
-
-<p>This should return all bucketlist created by the user</p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>q</td>
-<td>a keyword contained in the bucketlist name</td>
-</tr>
-</tbody>
-
-</table>
-
-
-
 
 
 <h2 id="fetch-by-pagination">Fetch by pagination</h2>
@@ -605,6 +524,106 @@ Remember to pass a valid id in this case 1
 <aside class="success">
 Note that maximum limit for a page is 100, while default limit is 20
 </aside>
+
+
+
+
+<h2 id="fetching-a-bucket-list">Fetching a bucket list</h2>
+
+<blockquote>
+<p>HTTP Status: 200 </p>
+</blockquote>
+<pre class="highlight shell"><code>curl -i -X GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/1 <span class="se">\</span>
+-H <span class="s2">"token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjF9LCJleHAiOjE0Nzc2NTQ2MDB9.OzgMEyQCwEZrlyrT2HV2CqvpQZ_PwhIbBxUGQLQqsKA"</span>
+</code></pre>
+
+<blockquote>
+<p>The above should return JSON data in the format </p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"emjay"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Get Married"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"2016-04-23T16:35:23.841Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"2016-04-23T16:35:23.841Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/1</code> </p>
+
+<p>This should return a bucketlist created by the user with bucket list id of 1 </p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
+</tr>
+</tbody></table>
+
+<aside class="success">
+Remember to pass a valid id in this case 1
+</aside>
+
+
+
+
+<h2 id="search-by-name">Search by name</h2>
+
+<blockquote>
+<p>HTTP Status: 200 </p>
+</blockquote>
+<pre class="highlight shell"><code>curl -i -X GET http://ultrabucket.herokuapp.com/api/v1/bucketlists <span class="se">\</span>
+-d <span class="s2">"q=Trave"</span> <span class="se">\</span>
+-H <span class="s2">"token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjF9LCJleHAiOjE0Nzc2NTQ2MDB9.OzgMEyQCwEZrlyrT2HV2CqvpQZ_PwhIbBxUGQLQqsKA"</span>
+</code></pre>
+
+<blockquote>
+<p>The above should return JSON data in the format </p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">
+    </span><span class="p">{</span><span class="w">
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="w">  </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"emjay"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Travel to other countries"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"2016-04-23T14:22:46.984Z"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"2016-04-23T16:36:56.869Z"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists</code> </p>
+
+<p>This should return all bucketlist created by the user</p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>q</td>
+<td>a keyword contained in the bucketlist name</td>
+</tr>
+</tbody>
+
+</table>
+
 
 
 
@@ -730,11 +749,79 @@ Remember to pass a valid id in this case 1
 </tr>
 </tbody></table>
 
+<aside class="success">
+Rember to pass in the bucket lists id for the associated item, in this case 1
+</aside>
 
+
+
+
+<h2 id="fetching-all-items">Fetching all items</h2>
+
+<blockquote>
+<p>HTTP Status: 200 </p>
+</blockquote>
+<pre class="highlight shell"><code>curl -i -X GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items <span class="se">\</span>
+-H <span class="s2">"token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjF9LCJleHAiOjE0Nzc2NTQ2MDB9.OzgMEyQCwEZrlyrT2HV2CqvpQZ_PwhIbBxUGQLQqsKA"</span>
+</code></pre>
+
+<blockquote>
+<p>The above should return JSON data in the format </p>
+</blockquote>
+<pre class="highlight json"><code>
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"see her parent"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-04-29T12:54:49.785Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-04-29T12:54:49.785Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items</code> </p>
 
 <aside class="success">
 Rember to pass in the bucket lists id for the associated item, in this case 1
 </aside>
+
+
+
+
+<h2 id="fetching-a-single-item">Fetching a single item</h2>
+
+<blockquote>
+<p>HTTP Status: 200 </p>
+</blockquote>
+<pre class="highlight shell"><code>curl -i -X GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items/1 <span class="se">\</span>
+-H <span class="s2">"token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjF9LCJleHAiOjE0Nzc2NTQ2MDB9.OzgMEyQCwEZrlyrT2HV2CqvpQZ_PwhIbBxUGQLQqsKA"</span>
+</code></pre>
+
+<blockquote>
+<p>The above should return JSON data in the format </p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"see her parent"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-04-29T12:54:49.785Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-04-29T12:54:49.785Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items/1</code> </p>
+
+<aside class="success">
+Rember to pass in the bucket lists id for the associated item, in this case 1
+</aside>
+
+
 
 <h2 id="updating-an-item">updating an item</h2>
 
@@ -776,77 +863,13 @@ Rember to pass in the bucket lists id for the associated item, in this case 1
 </tr>
 </tbody></table>
 
-
-
 <aside class="success">
 Rember to pass in the bucket lists id for the associated item, in this case 1
 </aside>
 
-<h2 id="fetching-all-items">Fetching all items</h2>
-
-<blockquote>
-<p>HTTP Status: 200 </p>
-</blockquote>
-<pre class="highlight shell"><code>curl -i -X GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items <span class="se">\</span>
--H <span class="s2">"token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjF9LCJleHAiOjE0Nzc2NTQ2MDB9.OzgMEyQCwEZrlyrT2HV2CqvpQZ_PwhIbBxUGQLQqsKA"</span>
-</code></pre>
-
-<blockquote>
-<p>The above should return JSON data in the format </p>
-</blockquote>
-<pre class="highlight json"><code>
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"see her parent"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-04-29T12:54:49.785Z"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-04-29T12:54:49.785Z"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-
-</code></pre>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items</code> </p>
 
 
 
-<aside class="success">
-Rember to pass in the bucket lists id for the associated item, in this case 1
-</aside>
-
-<h2 id="fetching-a-single-item">Fetching a single item</h2>
-
-<blockquote>
-<p>HTTP Status: 200 </p>
-</blockquote>
-<pre class="highlight shell"><code>curl -i -X GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items/1 <span class="se">\</span>
--H <span class="s2">"token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjF9LCJleHAiOjE0Nzc2NTQ2MDB9.OzgMEyQCwEZrlyrT2HV2CqvpQZ_PwhIbBxUGQLQqsKA"</span>
-</code></pre>
-
-<blockquote>
-<p>The above should return JSON data in the format </p>
-</blockquote>
-<pre class="highlight json"><code><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"see her parent"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-04-29T12:54:49.785Z"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-04-29T12:54:49.785Z"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-
-</span></code></pre>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items/1</code> </p>
-
-
-
-<aside class="success">
-Rember to pass in the bucket lists id for the associated item, in this case 1
-</aside>
 
 <h2 id="deleting-an-item">Deleting an item</h2>
 
