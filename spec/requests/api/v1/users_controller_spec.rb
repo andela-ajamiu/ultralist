@@ -15,7 +15,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       it "returns unprocessible_entity error" do
         post api_v1_register_path, params: attributes_for(:user, email: "")
 
-        expect(json_response[:errors]).to include("Email can't be blank")
+        expect(json_response[:error]).to include Message.email_required
         expect(response).to have_http_status(422)
       end
     end

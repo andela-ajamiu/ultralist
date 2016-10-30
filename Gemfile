@@ -47,6 +47,8 @@ group :development, :test do
   gem 'faker', '~> 1.6', '>= 1.6.6'
 
   gem 'codeclimate-test-reporter', '~> 0.6.0', require: nil
+
+  gem "simplecov", "~> 0.12.0", require: false
 end
 
 group :development do

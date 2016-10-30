@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Bucketlists #create", type: :request do
   let(:user) { create(:user) }
-  let(:create_params) { attributes_for(:bucketlist, user_id: user.id) }
+  let(:create_params) { attributes_for(:bucketlist) }
 
   context "when an authenticated user" do
     before { login_user(user) }
@@ -29,7 +29,7 @@ RSpec.describe "Bucketlists #create", type: :request do
                params: create_params,
                headers: user_token(user)
 
-          expect(json_response[:error]).to include "Name has already been taken"
+          expect(json_response[:error]).to include Message.name_exist_already
           expect(response).to have_http_status :unprocessable_entity
         end
       end
@@ -43,7 +43,7 @@ RSpec.describe "Bucketlists #create", type: :request do
              params: invalid_params,
              headers: user_token(user)
 
-        expect(json_response[:error]).to include "Name can't be blank"
+        expect(json_response[:error]).to include Message.name_required
         expect(response).to have_http_status :unprocessable_entity
       end
     end
@@ -53,9 +53,9 @@ RSpec.describe "Bucketlists #create", type: :request do
     it "does not create the bucketlist" do
       post api_v1_bucketlists_path,
            params: create_params,
-           headers: user_token(user)
+           headers: { token: "123.456" }
 
-      expect(json_response[:error]).to eq "Empty or Invalid header token"
+      expect(json_response[:error]).to eq Message.empty_invalid_token
       expect(response).to have_http_status :unauthorized
     end
   end

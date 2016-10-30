@@ -1,6 +1,6 @@
 class Bucketlist < ApplicationRecord
   belongs_to :user
-  has_many :items
+  has_many :items, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true
 
@@ -8,11 +8,11 @@ class Bucketlist < ApplicationRecord
     paginate(query_params[:page], query_params[:limit]).search(query_params[:q])
   end
 
-  def self.paginate(page, limit)
+  scope :paginate, lambda { |page, limit|
     limit = default_limit(limit.to_i)
     page_no = [page.to_i, 1].max - 1
-    limit(limit).offset(limit * page_no)
-  end
+    offset(limit * page_no).limit(limit)
+  }
 
   def self.default_limit(limit)
     limit = 20 if limit.zero?
@@ -20,8 +20,8 @@ class Bucketlist < ApplicationRecord
     limit
   end
 
-  def self.search(name)
+  scope :search, lambda { |name|
     name = name.downcase if name
     where("lower(name) like ?", "%#{name}%")
-  end
+  }
 end

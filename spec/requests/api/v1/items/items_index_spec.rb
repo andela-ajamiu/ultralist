@@ -22,12 +22,24 @@ RSpec.describe "Items #index", type: :request do
       end
     end
 
+    context "with a valid bucketlist id without any item" do
+      before { Item.destroy_all }
+
+      it "returns all bucket list items" do
+        get api_v1_bucketlist_items_path(bucketlist.id),
+            headers: user_token(user)
+
+        expect(json_response[:message]).to eq Message.empty_bucketlist
+        expect(response).to have_http_status :success
+      end
+    end
+
     context "with an invalid bucketlist id" do
       it "responds with a 404 http status" do
         get api_v1_bucketlist_items_path(6),
             headers: user_token(user)
 
-        expect(json_response[:error]).to eq "Bucketlist not found"
+        expect(json_response[:error]).to eq Message.bucketlist_not_found
         expect(response).to have_http_status :not_found
       end
     end
@@ -36,9 +48,9 @@ RSpec.describe "Items #index", type: :request do
   context "when an unauthenticated user" do
     it "responds with a 401 status" do
       get api_v1_bucketlist_items_path(bucketlist.id),
-          headers: user_token(user)
+          headers: { token: "123.456" }
 
-      expect(json_response[:error]).to eq "Empty or Invalid header token"
+      expect(json_response[:error]).to eq Message.empty_invalid_token
       expect(response).to have_http_status :unauthorized
     end
   end

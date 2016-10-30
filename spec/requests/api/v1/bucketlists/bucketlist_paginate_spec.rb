@@ -63,15 +63,26 @@ RSpec.describe "Paginating BucketLists", type: :request do
         expect(response).to have_http_status :success
       end
     end
+
+    context "with a page_no and limit that exceeds the number of items" do
+      it "returns no item" do
+        get api_v1_bucketlists_path,
+            params: { page: 3, limit: 100 },
+            headers: user_token(user)
+
+        expect(json_response[:error]).to eq Message.empty_search_result
+        expect(response).to have_http_status :success
+      end
+    end
   end
 
   context "as an unauthenticated user" do
     it "responds with a 401 status error" do
       get api_v1_bucketlists_path,
           params: { page: 1, limit: 120 },
-          headers: user_token(user)
+          headers: { token: "123.456" }
 
-      expect(json_response[:error]).to eq "Empty or Invalid header token"
+      expect(json_response[:error]).to eq Message.empty_invalid_token
       expect(response).to have_http_status :unauthorized
     end
   end

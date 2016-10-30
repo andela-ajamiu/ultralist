@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::API
-  require "jwt_authentication"
-
   private
 
   def update_token(user)
@@ -16,7 +14,7 @@ class ApplicationController < ActionController::API
     if current_request_token && decode_payload[:data]
       true
     else
-      render json: { error: "Empty or Invalid header token" },
+      render json: { error: Message.empty_invalid_token },
              status: :unauthorized
       false
     end
@@ -26,13 +24,13 @@ class ApplicationController < ActionController::API
     if logged_in_user && logged_in_user.token == current_request_token
       true
     else
-      render json: { error: "Unauthorized User" }, status: :unauthorized
+      render json: { error: Message.unauthorized_user }, status: :unauthorized
       false
     end
   end
 
   def logged_in_user
-    User.find_by(id: decode_payload[:data][:user_id])
+    @current_user ||= User.find_by(id: decode_payload[:data][:user_id])
   end
 
   def current_request_token
