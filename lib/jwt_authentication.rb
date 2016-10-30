@@ -2,7 +2,7 @@ require "jwt"
 
 class JwtAuthentication
   def self.encode(payload)
-    expire_at = 5.hours.from_now.to_i
+    expire_at = (DateTime.now + 5.hours).to_i
     expiration_payload = { data: payload, exp: expire_at }
     JWT.encode(expiration_payload, Rails.application.secrets.secret_key_base)
   end
