@@ -22,7 +22,7 @@ RSpec.describe "BucketLists #index", type: :request do
 
         get api_v1_bucketlists_path, headers: user_token(user)
 
-        expect(json_response[:message]).to eq "No Bucketlist at the moment"
+        expect(json_response[:message]).to eq Message.no_bucketlist
         expect(response).to have_http_status :ok
       end
     end
@@ -32,7 +32,7 @@ RSpec.describe "BucketLists #index", type: :request do
     it "responds with a 401 http status code" do
       get api_v1_bucketlists_path
 
-      expect(json_response[:error]).to eq "Empty or Invalid header token"
+      expect(json_response[:error]).to eq Message.empty_invalid_token
       expect(response).to have_http_status :unauthorized
     end
   end
@@ -43,7 +43,7 @@ RSpec.describe "BucketLists #index", type: :request do
     it "returns an error message with a 401 http status code" do
       get api_v1_bucketlists_path, headers: { token: "123.456" }
 
-      expect(json_response[:error]).to eq "Empty or Invalid header token"
+      expect(json_response[:error]).to eq Message.empty_invalid_token
       expect(response).to have_http_status :unauthorized
     end
   end

@@ -20,6 +20,18 @@ RSpec.describe "BucketLists #update", type: :request do
       end
     end
 
+    context "with a valid bucketlist id and a non-unique name" do
+      it "does not update the bucketlist" do
+        put api_v1_bucketlist_path(bucketlist.id),
+            params: { name: user.bucketlists.second.name },
+            headers: user_token(user)
+
+        user.reload
+        expect(json_response[:error]).to include Message.name_exist_already
+        expect(response).to have_http_status :unprocessable_entity
+      end
+    end
+
     context "with an invalid bucket_list id" do
       it "does not update the bucket list" do
         put api_v1_bucketlist_path(57),
@@ -37,10 +49,11 @@ RSpec.describe "BucketLists #update", type: :request do
     it "does not update the bucketlist" do
       put api_v1_bucketlist_path(bucketlist.id),
           params: { name: "Charity" },
-          headers: user_token(user)
+          headers: { token: "123.456" }
 
       user.reload
       expect(user.bucketlists.first.name).to_not eq "Charity"
+      expect(json_response[:error]).to eq Message.empty_invalid_token
       expect(response).to have_http_status :unauthorized
     end
   end

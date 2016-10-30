@@ -18,7 +18,7 @@ RSpec.describe "Deleting BucketList Items", type: :request do
         delete api_v1_bucketlist_item_path(path_params),
                headers: user_token(user)
 
-        expect(json_response[:message]).to eq "Bucketlist Item deleted"
+        expect(json_response[:message]).to eq Message.item_deleted
         expect(response).to have_http_status :success
       end
     end
@@ -29,7 +29,7 @@ RSpec.describe "Deleting BucketList Items", type: :request do
         get api_v1_bucketlist_item_path(path_params),
             headers: user_token(user)
 
-        expect(json_response[:error]).to eq "Bucketlist not found"
+        expect(json_response[:error]).to eq Message.bucketlist_not_found
         expect(response).to have_http_status :not_found
       end
     end
@@ -40,7 +40,7 @@ RSpec.describe "Deleting BucketList Items", type: :request do
         get api_v1_bucketlist_item_path(path_params),
             headers: user_token(user)
 
-        expect(json_response[:error]).to eq "Bucketlist Item not found"
+        expect(json_response[:error]).to eq Message.item_not_found
         expect(response).to have_http_status :not_found
       end
     end
@@ -51,7 +51,7 @@ RSpec.describe "Deleting BucketList Items", type: :request do
         get api_v1_bucketlist_item_path(path_params),
             headers: user_token(user)
 
-        expect(json_response[:error]).to eq "Bucketlist not found"
+        expect(json_response[:error]).to eq Message.bucketlist_not_found
         expect(response).to have_http_status :not_found
       end
     end
@@ -61,9 +61,9 @@ RSpec.describe "Deleting BucketList Items", type: :request do
     it "responds with a http 401 status error" do
       path_params = { bucketlist_id: bucketlist.id, id: item.id }
       get api_v1_bucketlist_item_path(path_params),
-          headers: user_token(user)
+          headers: { token: "123.456" }
 
-      expect(json_response[:error]).to eq "Empty or Invalid header token"
+      expect(json_response[:error]).to eq Message.empty_invalid_token
       expect(response).to have_http_status :unauthorized
     end
   end

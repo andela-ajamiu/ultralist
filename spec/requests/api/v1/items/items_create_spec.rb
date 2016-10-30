@@ -28,7 +28,7 @@ RSpec.describe "Items #create", type: :request do
                params: user.bucketlists.first.items.first.attributes,
                headers: user_token(user)
 
-          expect(json_response).to include "Name has already been taken"
+          expect(json_response[:error]).to include Message.name_exist_already
           expect(response).to have_http_status :unprocessable_entity
         end
       end
@@ -40,7 +40,7 @@ RSpec.describe "Items #create", type: :request do
              params: { name: "Chicago" },
              headers: user_token(user)
 
-        expect(json_response[:error]).to eq "Bucketlist not found"
+        expect(json_response[:error]).to eq Message.bucketlist_not_found
         expect(response).to have_http_status :not_found
       end
     end
@@ -50,9 +50,9 @@ RSpec.describe "Items #create", type: :request do
     it "does not create the bucketlist" do
       post api_v1_bucketlist_items_path(bucketlist.id),
            params: { name: "Chicago" },
-           headers: user_token(user)
+           headers: { token: "123.456" }
 
-      expect(json_response[:error]).to eq "Empty or Invalid header token"
+      expect(json_response[:error]).to eq Message.empty_invalid_token
       expect(response).to have_http_status :unauthorized
     end
   end

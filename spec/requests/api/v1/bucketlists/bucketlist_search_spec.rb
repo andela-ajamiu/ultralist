@@ -11,11 +11,10 @@ RSpec.describe "Searching BucketLists", type: :request do
     context "with a search query provided" do
       it "returns all bucketlists matching the search query" do
         get api_v1_bucketlists_path,
-            params: { q: "Travel 104" },
+            params: { q: "trav" },
             headers: user_token(user)
 
-        search_results = json_response.map { |bucket| bucket[:name] }
-        expect(search_results).to include("Travel 1044")
+        expect(json_response.first[:name]).to include "Trav"
         expect(json_response.first[:name]).to eq bucketlist.name
         expect(response).to have_http_status :success
       end
@@ -35,9 +34,10 @@ RSpec.describe "Searching BucketLists", type: :request do
   context "when an unauthenticated user" do
     it "returns a 401 status error" do
       get api_v1_bucketlists_path,
-          params: { q: "Travel 1" }
+          params: { q: "Travel" },
+          headers: { token: "123.456" }
 
-      expect(json_response[:error]).to eq "Empty or Invalid header token"
+      expect(json_response[:error]).to eq Message.empty_invalid_token
       expect(response).to have_http_status :unauthorized
     end
   end
