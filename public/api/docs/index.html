@@ -99,7 +99,7 @@
       </span>
     </a>
     <div class="tocify-wrapper">
-      <img src="images/ultralist.png" />
+      <img src="images/ultrabucket.png" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">cURL</a>
         </div>
@@ -110,8 +110,6 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -185,12 +183,12 @@ NOTE: The API is currently at version 1, so ensure you prefix each endpoint with
 
 <tr>
     <td>POST /bucketlists/(id)/items:</td>
-    <td>Creates a new item in bucketlist</td>
+    <td>Creates a new bucketlist item</td>
 </tr>
 
 <tr>
     <td>GET /bucketlists(id)/items:</td>
-    <td>Fetech all bucketlist item</td>
+    <td>Fetch all bucketlist items</td>
 </tr>
 
 <tr>
@@ -249,19 +247,24 @@ NOTE: The API is currently at version 1, so ensure you prefix each endpoint with
 <td>a valid username</td>
 </tr>
 <tr>
+<td>email</td>
+<td>a valid email</td>
+</tr>
+<tr>
 <td>password</td>
 <td>a valid string with a minium of 6 characters</td>
 </tr>
 </tbody></table>
 
-
-
 <aside class="success">
 Remember request must be of type POST
 </aside>
 
-<h2 id="user-login">User Login</h2>
 
+
+
+
+<h2 id="user-login">User Login</h2>
 <blockquote>
 <p>HTTP Status: 200 </p>
 </blockquote>
@@ -283,7 +286,7 @@ Remember request must be of type POST
 
 <p><code class="prettyprint">POST http://ultrabucket.herokuapp.com/api/v1/auth/login</code> </p>
 
-<p>After successfull account creation, you should login to verify your  account and get a token. This token would be used for subsequent request sent to the server. </p>
+<p>After successfull account creation, you will be automatically logged-in and assigned a token. This token would be used for subsequent request sent to the server. </p>
 
 <h3 id="query-parameters">Query Parameters</h3>
 
@@ -303,9 +306,54 @@ Remember request must be of type POST
 </tr>
 </tbody></table>
 
+<aside class="success">
+Note that your token expires automatically after every 5 hours of logging in, you may need to login again after 5 hours to continue using the API.
+</aside>
+
+
+<h2 id="user-logged-in">User Logged In</h2>
+<blockquote>
+<p>HTTP Status: 200</p>
+</blockquote>
+<pre class="highlight shell"><code>curl -i -X GET http://ultrabucket.herokuapp.com/api/v1/auth/logged_in <span class="se">\</span>
+-H <span class="s2">"token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjV9LCJleHAiOjE0Nzc2NDk5NDh9.OYA0Rbx_08hlahcsby5qr8r1HES5BOy3V6y115pnmBI"</span>
+</code></pre>
+
+<blockquote>
+<p>The above should return JSON data in the format </p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"You are still logged in"</span><span class="w">
+    </span><span class="nt">"expires_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sunday, 30/Oct/2016  1:02PM"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/auth/logged_in</code> </p>
+
+<p>This shows whether your token has expired or not.</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
+</tr>
+</tbody></table>
+<aside>
+Please ensure you pass in a valid user token or you may not be able to confirm your status.
+</aside>
+
+
 
 <h2 id="user-logout">User Logout</h2>
-
 <blockquote>
 <p>HTTP Status: 200</p>
 </blockquote>
@@ -325,7 +373,7 @@ Remember request must be of type POST
 
 <p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/auth/logout</code> </p>
 
-<p>When a user is done, you may want to expire the user session, simply send a delete request to the server </p>
+<p>When you are done, you may want to make your token expire instantly, simply send this GET request to the server </p>
 
 <h3 id="headers">Headers</h3>
 
@@ -340,16 +388,14 @@ Remember request must be of type POST
 <td>a valid user token</td>
 </tr>
 </tbody></table>
-
-
 <aside>
-Please ensure you pass in a valid user token or you may not be able to end a user session
+Please ensure you pass in a valid user token or you may not be able to make it expire.
 </aside>
 
+
+
 <h1 id="bucket-list">Bucket List</h1>
-
 <h2 id="creating-a-bucketlist">Creating a bucketlist</h2>
-
 <blockquote>
 <p>HTTP Status: 201 </p>
 </blockquote>
@@ -420,8 +466,7 @@ Remember request must be of type POST
 <blockquote>
 <p>The above should return JSON data in the format </p>
 </blockquote>
-<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
-
+<pre class="highlight json"><code>
         </span><span class="p">{</span><span class="w">
           </span><span class="nt">"id"</span><span class="p">:</span><span class="w">  </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
           </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"emjay"</span><span class="p">,</span><span class="w">
@@ -437,15 +482,13 @@ Remember request must be of type POST
          </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"2016-04-23T16:35:23.841Z"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span>
-
-    <span class="p">}</span><span class="w">
-</span></code></pre>
+</code></pre>
 
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists</code> </p>
 
-<p>This should return all bucketlist created by the user</p>
+<p>This should return all bucketlists created by the user</p>
 
 <h3 id="headers">Headers</h3>
 
@@ -518,6 +561,20 @@ Remember request must be of type POST
 <tr>
 <td>limit</td>
 <td>number of records to return</td>
+</tr>
+</tbody></table>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
 </tr>
 </tbody></table>
 
@@ -604,7 +661,7 @@ Remember to pass a valid id in this case 1
 
 <p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists</code> </p>
 
-<p>This should return all bucketlist created by the user</p>
+<p>This should return all bucketlists that contains the name in the search keyword</p>
 
 <h3 id="query-parameters">Query Parameters</h3>
 
@@ -621,10 +678,21 @@ Remember to pass a valid id in this case 1
 <td>a keyword contained in the bucketlist name</td>
 </tr>
 </tbody>
-
 </table>
 
+<h3 id="headers">Headers</h3>
 
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
+</tr>
+</tbody></table>
 
 
 <h2 id="updating-a-bucket-list">Updating a bucket list</h2>
@@ -669,9 +737,24 @@ Remember to pass a valid id in this case 1
 </tr>
 </tbody></table>
 
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
+</tr>
+</tbody></table>
+
 <aside class="success">
 Remember to pass a valid id in this case 1
 </aside>
+
 
 
 
@@ -698,10 +781,24 @@ Remember to pass a valid id in this case 1
 
 <p>This should delete bucket list with id 1</p>
 
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
+</tr>
+</tbody></table>
 
 <aside class="success">
 Remember to pass a valid id in this case 1
 </aside>
+
 
 
 
@@ -729,14 +826,13 @@ Remember to pass a valid id in this case 1
   </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>To use our API, you will have to create an account simply by sending a <code class="prettyprint">POST</code> request to the appropriate endpoint</p>
+<p>To create an item, you will have to create an account simply by sending a <code class="prettyprint">POST</code> request to the appropriate bucketlist endpoint</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">POST http://ultrabucket.herokuapp.com/api/v1/bucketlists/1/items</code> </p>
 
 <h3 id="query-parameters">Query Parameters</h3>
-
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -749,8 +845,21 @@ Remember to pass a valid id in this case 1
 </tr>
 </tbody></table>
 
+<h3 id="headers">Headers</h3>
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
+</tr>
+</tbody></table>
+
 <aside class="success">
-Rember to pass in the bucket lists id for the associated item, in this case 1
+Rember to pass in the bucketlist id for the associated item, in this case 1
 </aside>
 
 
@@ -783,8 +892,21 @@ Rember to pass in the bucket lists id for the associated item, in this case 1
 
 <p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items</code> </p>
 
+<h3 id="headers">Headers</h3>
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
+</tr>
+</tbody></table>
+
 <aside class="success">
-Rember to pass in the bucket lists id for the associated item, in this case 1
+Rember to pass in the bucketlist id for the associated item, in this case 2
 </aside>
 
 
@@ -817,8 +939,21 @@ Rember to pass in the bucket lists id for the associated item, in this case 1
 
 <p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items/1</code> </p>
 
+<h3 id="headers">Headers</h3>
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
+</tr>
+</tbody></table>
+
 <aside class="success">
-Rember to pass in the bucket lists id for the associated item, in this case 1
+Rember to pass in the bucketlist id for the associated item, in this case 2
 </aside>
 
 
@@ -863,8 +998,21 @@ Rember to pass in the bucket lists id for the associated item, in this case 1
 </tr>
 </tbody></table>
 
+<h3 id="headers">Headers</h3>
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
+</tr>
+</tbody></table>
+
 <aside class="success">
-Rember to pass in the bucket lists id for the associated item, in this case 1
+Rember to pass in the bucketlist id for the associated item, in this case 2
 </aside>
 
 
@@ -892,10 +1040,21 @@ Rember to pass in the bucket lists id for the associated item, in this case 1
 
 <p><code class="prettyprint">GET http://ultrabucket.herokuapp.com/api/v1/bucketlists/2/items/1</code> </p>
 
-
+<h3 id="headers">Headers</h3>
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>a valid user token</td>
+</tr>
+</tbody></table>
 
 <aside class="success">
-Rember to pass in the bucket lists id for the associated item, in this case 1
+Rember to pass in the bucketlist id for the associated item, in this case 2
 </aside>
 
       </div>
