@@ -9,7 +9,7 @@ module Api
         if @bucketlists.any?
           search_and_paginate(@bucketlists)
         else
-          render json: { message: "No Bucketlist at the moment" }
+          render json: { message: Message.no_bucketlist }
         end
       end
 
@@ -29,19 +29,19 @@ module Api
       end
 
       def update
-        if bucketlist_params.empty? ||
-           bucketlist_params[:name] == @bucketlist.name
-          render json: { error: "Please input a new name for the bucketlist" },
-                 status: :unprocessable_entity
-        else
-          @bucketlist.update(bucketlist_params)
+        return render(json: { error: Message.bucketlist_name },
+                      status: :unprocessable_entity) if bucketlist_params.empty?
+        if @bucketlist.update(bucketlist_params)
           render json: @bucketlist
+        else
+          render json: { error: @bucketlist.errors.full_messages },
+                 status: :unprocessable_entity
         end
       end
 
       def destroy
         @bucketlist.destroy
-        render json: { message: "Bucketlist successfully deleted" }
+        render json: { message: Message.bucketlist_deleted }
       end
 
       private
@@ -49,7 +49,7 @@ module Api
       def set_bucketlist
         return false unless authenticate_token_and_user
         @bucketlist = logged_in_user.bucketlists.find_by(id: params[:id])
-        render json: { error: "Bucketlist not found" },
+        render json: { error: Message.bucketlist_not_found },
                status: 404 unless @bucketlist
       end
 
@@ -57,7 +57,7 @@ module Api
         if bucketlists.paginate_and_search(params).any?
           render json: bucketlists.paginate_and_search(params)
         else
-          render json: { error: "Search result is empty" }
+          render json: { error: Message.empty_search_result }
         end
       end
 

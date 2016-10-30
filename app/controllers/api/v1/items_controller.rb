@@ -9,7 +9,7 @@ module Api
         if @items.any?
           render json: @items
         else
-          render json: { message: "This Bucketlist is empty" }
+          render json: { message: Message.empty_bucketlist }
         end
       end
 
@@ -23,13 +23,15 @@ module Api
         if @item.save
           render json: @item, status: :created
         else
-          render json: @item.errors.full_messages, status: :unprocessable_entity
+          render json: { error: @item.errors.full_messages },
+                 status: :unprocessable_entity
         end
       end
 
       def update
         if item_params.empty? || item_params[:name] == @item.name
-          render json: @item.errors, status: :unprocessable_entity
+          render json: { error: @item.errors },
+                 status: :unprocessable_entity
         else
           @item.update(item_params)
           render json: @item
@@ -38,7 +40,7 @@ module Api
 
       def destroy
         @item.destroy
-        render json: { message: "Bucketlist Item deleted" }
+        render json: { message: Message.item_deleted }
       end
 
       private
@@ -50,15 +52,15 @@ module Api
         if @bucketlist
           true
         else
-          render json: { error: "Bucketlist not found" },
-                 status: :not_found unless @bucketlist
+          render json: { error: Message.bucketlist_not_found },
+                 status: :not_found
           false
         end
       end
 
       def set_item
         @item = @bucketlist.items.find_by(id: params[:id])
-        render json: { error: "Bucketlist Item not found" },
+        render json: { error: Message.item_not_found },
                status: :not_found unless @item
       end
 
