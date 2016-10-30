@@ -4,7 +4,7 @@
 
 <h3>Overview</h3>
 
-UltraBucket is an API that lets you manage bucket lists. A bucket list is simply a number of experiences or achievements that a person hopes to have or accomplish during their lifetime.
+UltraBucket is an API that lets you manage your bucketlists. A bucket list is simply a number of experiences or achievements that a person hopes to have or accomplish during their lifetime.
 
 
 
@@ -43,62 +43,74 @@ Below is the list of available endpoints in the BucketList API. Some end points 
 </tr>
 
 <tr>
+  <td>GET /api/v1/auth/logged_in</td>
+  <td>Shows the token status</td>
+  <td>FALSE</td>
+</tr>
+
+<tr>
   <td>GET /api/v1/auth/logout</td>
   <td>Logs a user out</td>
   <td>FALSE</td>
 </tr>
 
 <tr>
-  <td>GET /api/v1/bucketlists</td>
-  <td>List all the created bucket lists</td>
+  <td>POST /api/v1/bucketlists</td>
+  <td>Create a new bucketlist</td>
   <td>FALSE</td>
 </tr>
 
 <tr>
-  <td>POST /api/v1/bucketlists</td>
-  <td>Create a new bucket list</td>
+  <td>GET /api/v1/bucketlists</td>
+  <td>List all the created bucketlists</td>
   <td>FALSE</td>
 </tr>
 
 <tr>
   <td>GET /bucketlists/:id</td>
-  <td>Get single bucket list</td>
+  <td>Get a single bucketlist</td>
   <td>FALSE</td>
 </tr>
 
 <tr>
   <td>PUT /bucketlists/:id</td>
-  <td>Update this bucket list</td>
+  <td>Update this bucketlist</td>
   <td>FALSE</td>
 </tr>
 
 <tr>
   <td>DELETE /bucketlists/:id</td>
-  <td>Delete this single bucket list</td>
-  <td>FALSE</td>
-</tr>
-
-<tr>
-  <td>GET /bucketlists/:id/items</td>
-  <td>Lists all items in the single bucket list.</td>
+  <td>Delete this single bucketlist</td>
   <td>FALSE</td>
 </tr>
 
 <tr>
   <td>POST /bucketlists/:id/items</td>
-  <td>Creates a new item in the bucket list</td>
+  <td>Creates a new item in the bucketlist</td>
+  <td>FALSE</td>
+</tr>
+
+<tr>
+  <td>GET /bucketlists/:id/items</td>
+  <td>Lists all items in the single bucketlist.</td>
+  <td>FALSE</td>
+</tr>
+
+<tr>
+  <td>GET /bucketlists/:id/items/:item_id</td>
+  <td>Fetches a single bucketlist Item</td>
   <td>FALSE</td>
 </tr>
 
 <tr>
   <td>PUT /bucketlists/:id/items/:item_id</td>
-  <td>Updates a bucket list item</td>
+  <td>Updates a bucketlist item</td>
   <td>FALSE</td>
 </tr>
 
 <tr>
   <td>DELETE /bucketlists/:id/items/:item_id</td>
-  <td>Deletes an item in a bucket list</td>
+  <td>Deletes an item in a bucketlist</td>
   <td>FALSE</td>
 </tr>
 </table>
@@ -118,14 +130,14 @@ A typical bucket list requested by a user would look like this:
                done: false
              }
            ]
-    created_by: “Smith”
+    created_by: “emjay”
 }
 </pre>
 
 
 
 <h3> Pagination </h3>
-The BucketList API comes with pagination by default, so the number of results to display to users can be specified when listing the bucket lists, by supplying the <code>page</code> and <code>limit</code> in the request to the API.
+The Bucketlist API comes with pagination by default, so the number of results to display to users can be specified when fetching the bucketlists, by supplying the <code>page</code> and <code>limit</code> params in the request to the API.
 
 <h4>Example</h4>
 <b>Request:</b>
@@ -150,7 +162,7 @@ Users can search for a bucket list by using it's name as the search parameter wh
 
 <b>Response:</b>
 <pre>
-Bucket lists that include name “bucket1” gets returned
+This returns all bucketlists whose name contains "bucket1"
 </pre>
 
 
@@ -171,7 +183,7 @@ To test locally, go through the following steps.
   $  git clone git@github.com:andela-ajamiu/ultralist.git
   ```
 
-2. `cd` into the `BucketList_API` folder.
+2. `cd` into the `ultralist` folder.
 
   ```bash
   $  cd ultralist
@@ -186,7 +198,7 @@ To test locally, go through the following steps.
 4. Set up and migrate the database.
 
   ```bash
-  $ rake db:setup && rake db:migrate
+  $ rake db:setup
   ```
 
 5. Run the tests.
